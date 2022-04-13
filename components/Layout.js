@@ -36,10 +36,10 @@ export default function Main() {
             </p>
           </div>
           <div className="mb-20 mt-44 hidden w-full flex-col lg:mt-12 lg:inline-block lg:w-3/6">
-            <img src="/images/eve.jpeg" alt="Hero" />
+            <img src="images/eve.jpeg" alt="Hero" />
           </div>
           <div className="my-20 inline-block w-full flex-col lg:mt-0 lg:hidden lg:w-2/5">
-            <img src="/images/eve.jpeg" alt="image" />
+            <img src="images/eve.jpeg" alt="image" />
           </div>
         </div>
         <div className="mt-0 bg-white">
@@ -109,13 +109,13 @@ export default function Main() {
               </div>
             </div>
             <div className="lg:w-full lg:max-w-2xl">
-              <img src="/images/rationale.jpeg" alt="img" />
+              <img src="images/rationale.jpeg" alt="img" />
             </div>
           </div>
           <div className="mt-10">
             <div className="mx-auto flex flex-col px-5 py-24 text-left lg:flex-row">
               <div className="hidden lg:inline-block lg:w-full lg:max-w-xl">
-                <img src="/images/explore.jpeg" alt="img" />
+                <img src="images/explore.jpeg" alt="img" />
               </div>
               <div className="flex flex-col pt-0 text-left lg:w-1/2 lg:flex-grow lg:items-start lg:pl-16 lg:pl-24 lg:pt-24">
                 <h2 className="mb-4 text-4xl font-bold leading-none sm:text-5xl">
@@ -140,7 +140,7 @@ export default function Main() {
                 </div>
               </div>
               <div className="inline-block lg:hidden lg:w-full lg:max-w-xl">
-                <img src="/images/explore.jpeg" alt="img" />
+                <img src="images/explore.jpeg" alt="img" />
               </div>
             </div>
           </div>
@@ -252,12 +252,12 @@ export default function Main() {
               </div>
               <div className="w-4/7 pr-12 lg:w-2/5">
                 <img
-                  src="/images/action.jpeg"
+                  src="images/action.jpeg"
                   className="hidden object-cover object-center lg:inline-block"
                   alt="image"
                 />
                 <img
-                  src="/images/action.jpeg"
+                  src="images/action.jpeg"
                   className="inline-block object-cover object-center lg:hidden"
                   alt="image"
                 />
