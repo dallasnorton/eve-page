@@ -128,7 +128,7 @@ export default function Main() {
                       deployed and the service (unit backed) is reconfigured.
                     </li>
                     <li>
-                      ​No changes to developer's code (i.e. no messing with
+                      ​No changes to developer&#39;s code (i.e. no messing with
                       entrypoints and other “infra” stuff (that developers do
                       not care about)
                     </li>
