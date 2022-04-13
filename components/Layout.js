@@ -14,12 +14,19 @@ export default function Main() {
     try {
       setIsLoading(true);
       console.log({ branch }, { dest }, { repo });
-      const resp = await fetch('https://cat-fact.herokuapp.com/facts');
+
+      const resp = await fetch('/eve/api/v1/pull', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ branch, dest: `/unitapps/app/${dest}`, repo }),
+      });
+
       const data = await resp.json();
-      setLinkName('astra-page');
-      setLink('https://dallasnorton.github.io/astra-page/');
+      console.log({ data });
+
+      setLinkName(branch);
+      setLink(`${repo}/unitapps/app/${dest}/${branch}`);
       setIsLoading(false);
-      console.log(data);
     } catch (error) {
       console.warn(error);
       setIsLoading(false);
