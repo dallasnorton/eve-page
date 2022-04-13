@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 
 export default function Main() {
   const [isLoading, setIsLoading] = useState(false);
+  const [link, setLink] = useState();
+  const [linkName, setLinkName] = useState('Go');
   const [branch, setBranch] = useState('');
   const [dest, setDest] = useState('');
   const [repo, setRepo] = useState('');
@@ -14,6 +16,8 @@ export default function Main() {
       console.log({ branch }, { dest }, { repo });
       const resp = await fetch('https://cat-fact.herokuapp.com/facts');
       const data = await resp.json();
+      setLinkName('astra-page');
+      setLink('https://dallasnorton.github.io/astra-page/');
       setIsLoading(false);
       console.log(data);
     } catch (error) {
@@ -25,6 +29,153 @@ export default function Main() {
   return (
     <div className="grotesk max-w-8xl mx-auto">
       <section className="w-full text-black">
+        <div className="my-8 p-4 text-black">
+          <div className="max-w-9xl mx-auto flex flex-col items-center bg-gradient-to-r from-blue-200 to-blue-100 px-5 py-24 lg:flex-row">
+            <div className="flex flex-col items-center pl-0 text-center lg:mb-0 lg:w-1/2 lg:flex-grow lg:items-start lg:pl-12 lg:pr-24 lg:text-left">
+              <h2 className="pb-4 text-2xl font-bold leading-tight lg:text-4xl">
+                Eve Console
+              </h2>
+              <div className="mb-4 flex w-full">
+                <div className="mr-4 flex-1">
+                  <label
+                    htmlFor="branch"
+                    className="text-md block font-medium text-gray-700"
+                  >
+                    Branch
+                  </label>
+                  <input
+                    type="text"
+                    name="branch"
+                    id="branch"
+                    onChange={(e) => setBranch(e.target.value)}
+                    className="
+                    mt-1
+                    block
+                    w-full
+                    rounded-md
+                    border-gray-300
+                    shadow-sm
+                    focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                  />
+                </div>
+                <div className="flex-1">
+                  <label
+                    htmlFor="dest"
+                    className="text-md block font-medium text-gray-700"
+                  >
+                    Dest
+                  </label>
+                  <input
+                    type="text"
+                    name="dest"
+                    id="dest"
+                    onChange={(e) => setDest(e.target.value)}
+                    className="
+                    mt-1
+                    block
+                    w-full
+                    rounded-md
+                    border-gray-300
+                    shadow-sm
+                    focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                  />
+                </div>
+              </div>
+              <div className="mb-4 w-full">
+                <label
+                  htmlFor="repo"
+                  className="text-md block font-medium text-gray-700"
+                >
+                  Repo
+                </label>
+                <input
+                  type="text"
+                  name="repo"
+                  id="repo"
+                  onChange={(e) => setRepo(e.target.value)}
+                  className="
+                    mt-1
+                    block
+                    w-full
+                    rounded-md
+                    border-gray-300
+                    shadow-sm
+                    focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50
+                  "
+                />
+              </div>
+              <div className="flex items-center justify-center">
+                <button
+                  className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+                  onClick={onClick}
+                >
+                  Deploy
+                </button>
+                {isLoading && (
+                  <svg
+                    className="ml-3 h-5 w-5 animate-spin text-blue-700"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                )}
+                {link && (
+                  <a
+                    href={link}
+                    className="
+                  ml-3
+                  flex
+                  items-center
+                  justify-center
+                  text-base
+                  font-bold
+                  text-blue-700
+                  underline
+                  hover:text-blue-500
+                "
+                  >
+                    {linkName}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="ml-1 h-4 w-4"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                      <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+                    </svg>
+                  </a>
+                )}
+              </div>
+            </div>
+            <div className="w-4/7 pr-12 lg:w-2/5">
+              <img
+                src="images/action.jpeg"
+                className="hidden object-cover object-center lg:inline-block"
+                alt="image"
+              />
+              <img
+                src="images/action.jpeg"
+                className="inline-block object-cover object-center lg:hidden"
+                alt="image"
+              />
+            </div>
+          </div>
+        </div>
         <div className="max-w-8xl mx-auto inline-block items-center p-3 pt-0 lg:flex lg:flex-wrap lg:pt-4">
           <div className="lg:w-3/6">
             <h2 className="inline-block max-w-xl text-3xl font-bold leading-none text-black lg:text-[4.2em]">
@@ -141,126 +292,6 @@ export default function Main() {
               </div>
               <div className="inline-block lg:hidden lg:w-full lg:max-w-xl">
                 <img src="images/explore.jpeg" alt="img" />
-              </div>
-            </div>
-          </div>
-          <div className="my-8 p-4 text-black">
-            <div className="max-w-9xl mx-auto flex flex-col items-center bg-gradient-to-r from-blue-200 to-blue-100 px-5 py-24 lg:flex-row">
-              <div className="flex flex-col items-center pl-0 text-center lg:mb-0 lg:w-1/2 lg:flex-grow lg:items-start lg:pl-12 lg:pr-24 lg:text-left">
-                <h2 className="pb-4 text-2xl font-bold leading-tight lg:text-4xl">
-                  Action
-                </h2>
-                <div className="mb-4 flex w-full">
-                  <div className="mr-4 flex-1">
-                    <label
-                      htmlFor="branch"
-                      className="text-md block font-medium text-gray-700"
-                    >
-                      Branch
-                    </label>
-                    <input
-                      type="text"
-                      name="branch"
-                      id="branch"
-                      onChange={(e) => setBranch(e.target.value)}
-                      className="
-                    mt-1
-                    block
-                    w-full
-                    rounded-md
-                    border-gray-300
-                    shadow-sm
-                    focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <label
-                      htmlFor="dest"
-                      className="text-md block font-medium text-gray-700"
-                    >
-                      Dest
-                    </label>
-                    <input
-                      type="text"
-                      name="dest"
-                      id="dest"
-                      onChange={(e) => setDest(e.target.value)}
-                      className="
-                    mt-1
-                    block
-                    w-full
-                    rounded-md
-                    border-gray-300
-                    shadow-sm
-                    focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                    />
-                  </div>
-                </div>
-                <div className="mb-4 w-full">
-                  <label
-                    htmlFor="repo"
-                    className="text-md block font-medium text-gray-700"
-                  >
-                    Repo
-                  </label>
-                  <input
-                    type="text"
-                    name="repo"
-                    id="repo"
-                    onChange={(e) => setRepo(e.target.value)}
-                    className="
-                    mt-1
-                    block
-                    w-full
-                    rounded-md
-                    border-gray-300
-                    shadow-sm
-                    focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50
-                  "
-                  />
-                </div>
-                <div className="flex items-center justify-center">
-                  <button
-                    className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
-                    onClick={onClick}
-                  >
-                    Go
-                  </button>
-                  {isLoading && (
-                    <svg
-                      className="ml-3 h-5 w-5 animate-spin text-blue-700"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
-                  )}
-                </div>
-              </div>
-              <div className="w-4/7 pr-12 lg:w-2/5">
-                <img
-                  src="images/action.jpeg"
-                  className="hidden object-cover object-center lg:inline-block"
-                  alt="image"
-                />
-                <img
-                  src="images/action.jpeg"
-                  className="inline-block object-cover object-center lg:hidden"
-                  alt="image"
-                />
               </div>
             </div>
           </div>
