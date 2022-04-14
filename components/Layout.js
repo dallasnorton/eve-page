@@ -25,7 +25,7 @@ export default function Main() {
       console.log({ data });
 
       setLinkName(branch);
-      setLink(`${dest}/${branch}/out`);
+      setLink(`/${branch}/out`);
       setIsLoading(false);
     } catch (error) {
       console.warn(error);
