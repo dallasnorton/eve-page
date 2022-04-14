@@ -25,7 +25,7 @@ export default function Main() {
       console.log({ data });
 
       setLinkName(branch);
-      setLink(`${repo}/unitapps/app/${dest}/${branch}`);
+      setLink(`${dest}/${branch}/out`);
       setIsLoading(false);
     } catch (error) {
       console.warn(error);
