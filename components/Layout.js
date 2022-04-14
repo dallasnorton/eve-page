@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @next/next/no-html-link-for-pages */
 import Loading from './Loading';
+import Logos from './Logos';
 import dynamic from 'next/dynamic';
 
 const ReactJson = dynamic(
@@ -18,6 +19,16 @@ export default function Main() {
   const [branch, setBranch] = useState('');
   const [repo, setRepo] = useState('');
 
+  useEffect(() => {
+    const fetchInfo = async () => {
+      const infoRes = await fetch('/eve/api/v1/info');
+      const infoData = await infoRes.json();
+      setServerInfo(infoData);
+    }
+    
+    fetchInfo();
+  }, [])
+  
   const onClick = async () => {
     try {
       setIsLoading(true);
@@ -146,18 +157,21 @@ export default function Main() {
               </div>
             </div>
             <div className="w-4/7 pr-12 lg:w-2/5">
+            <div className="flex justify-end">
+              <Logos />
+            </div>
               <ReactJson
                 src={serverInfo}
                 enableClipboard={false}
                 displayObjectSize={false}
                 displayDataTypes={false}
-                collapsed={1}
+                collapsed={true}
                 style={{
                   background: 'white',
                   borderRadius: '6px',
                   border: '1px solid rgb(209, 213, 219)',
                   padding: 12,
-                  marginTop: 83,
+                  marginTop: 48,
                   minHeight: 130,
                 }}
               />
