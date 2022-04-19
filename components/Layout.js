@@ -24,11 +24,11 @@ export default function Main() {
       const infoRes = await fetch('/eve/api/v1/info');
       const infoData = await infoRes.json();
       setServerInfo(infoData);
-    }
-    
+    };
+
     fetchInfo();
-  }, [])
-  
+  }, []);
+
   const onClick = async () => {
     try {
       setIsLoading(true);
@@ -76,6 +76,7 @@ export default function Main() {
                     name="branch"
                     id="branch"
                     onChange={(e) => setBranch(e.target.value)}
+                    placeholder="main, master, dev, ..."
                     className="
                     mt-1
                     block
@@ -89,15 +90,15 @@ export default function Main() {
               </div>
               <div className="mb-4 w-full">
                 <label
-                  htmlFor="repo"
+                  htmlFor="Repository"
                   className="text-md block font-medium text-gray-700"
                 >
-                  Repo
+                  Repository
                 </label>
                 <input
                   type="text"
-                  name="repo"
-                  id="repo"
+                  name="Repository"
+                  id="Repository"
                   onChange={(e) => setRepo(e.target.value)}
                   className="
                     mt-1
@@ -157,9 +158,9 @@ export default function Main() {
               </div>
             </div>
             <div className="w-4/7 pr-12 lg:w-2/5">
-            <div className="flex justify-end">
-              <Logos />
-            </div>
+              <div className="flex justify-end">
+                <Logos />
+              </div>
               <ReactJson
                 src={serverInfo}
                 enableClipboard={false}
