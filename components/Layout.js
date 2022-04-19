@@ -32,7 +32,7 @@ export default function Main() {
   const onClick = async () => {
     try {
       setIsLoading(true);
-      setLinks([...links, { ref: `/${branch}/out`, name: branch }]);
+      setLinks([...links, { ref: `/${branch}/`, name: branch }]);
 
       const resp = await fetch('/eve/api/v1/pull', {
         method: 'POST',
