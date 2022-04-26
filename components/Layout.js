@@ -24,14 +24,52 @@ export default function Main() {
     const fetchInfo = async () => {
       const infoRes = await fetch('/eve/api/v1/info');
       const infoData = await infoRes.json();
+      // const infoData = {
+      //   applications: {
+      //     eve: {
+      //       callable: 'app',
+      //       module: 'eveapi.__main__',
+      //       path: '/usr/local/eve',
+      //       type: 'python 3',
+      //       user: 'unit',
+      //     },
+      //   },
+      //   listeners: {
+      //     '*:8080': {
+      //       pass: 'applications/eve',
+      //     },
+      //     '*:8081': {
+      //       pass: 'routes',
+      //     },
+      //     '*:8443': {
+      //       pass: 'routes',
+      //     },
+      //   },
+      //   routes: [
+      //     {
+      //       action: {
+      //         share: '/unitapps/app/$uri',
+      //       },
+      //     },
+      //     {
+      //       action: {
+      //         share: '/unitapps/app/stage/$uri',
+      //       },
+      //     },
+      //   ],
+      // };
+
+      console.log('init infoData', infoData.status, infoData);
       if (infoData.status === 'ok') {
         setServerInfo(infoData);
         const routes = [...infoData.routes];
         routes.shift();
+        console.log('init routes', routes);
         const deployedLinks = routes.map((route) => {
           const link = route.action.share.split('/')[3];
           return { ref: `/${link}/`, name: link };
         });
+        console.log('init deployedLinks', deployedLinks);
         setLinks(deployedLinks);
       }
     };
@@ -83,14 +121,17 @@ export default function Main() {
 
       const infoRes = await fetch('/eve/api/v1/info');
       const infoData = await infoRes.json();
+      console.log('click infoData', infoData.status, infoData);
       if (infoData.status === 'ok') {
         setServerInfo(infoData);
         const routes = [...infoData.routes];
         routes.shift();
+        console.log('click route', routes);
         const deployedLinks = routes.map((route) => {
           const link = route.action.share.split('/')[3];
           return { ref: `/${link}/`, name: link };
         });
+        console.log('click deployedLinks', deployedLinks);
         setLinks(deployedLinks);
       }
 
