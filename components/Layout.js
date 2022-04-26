@@ -25,17 +25,14 @@ export default function Main() {
       const infoRes = await fetch('/eve/api/v1/info');
       const infoData = await infoRes.json();
 
-      console.log('init infoData', infoData.status, infoData);
       if (infoData) {
         setServerInfo(infoData);
         const routes = [...infoData.routes];
         routes.shift();
-        console.log('init routes', routes);
         const deployedLinks = routes.map((route) => {
           const link = route.action.share.split('/')[3];
           return { ref: `/${link}/`, name: link };
         });
-        console.log('init deployedLinks', deployedLinks);
         setLinks(deployedLinks);
       }
     };
@@ -161,11 +158,12 @@ export default function Main() {
                       ))}
                     </select>
                     <button
-                      className="ml-4 h-10 rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-300"
+                      className="ml-4 inline-flex h-10 items-center rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-300"
                       onClick={onClick}
                       disabled={branch.length === 0 || repo.length === 0}
                     >
                       Deploy
+                      {isLoading && <Loading />}
                     </button>
                   </div>
                 </div>
@@ -177,14 +175,11 @@ export default function Main() {
                     <div className="flex flex-col items-start">
                       {links.map((link, index) => (
                         <div key={index} className="mt-2 flex h-6 items-center">
-                          {index === links.length - 1 && isLoading ? (
-                            <Loading />
-                          ) : (
-                            <a
-                              href={link.ref}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="
+                          <a
+                            href={link.ref}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="
                             flex
                             items-center
                             justify-center
@@ -194,19 +189,19 @@ export default function Main() {
                             underline
                             hover:text-blue-500
                           "
+                          >
+                            {link.name}
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="ml-1 h-4 w-4"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
                             >
-                              {link.name}
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="ml-1 h-4 w-4"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                              >
-                                <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
-                                <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
-                              </svg>
-                            </a>
-                          )}
+                              <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                              <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+                            </svg>
+                          </a>
+                          }
                         </div>
                       ))}
                     </div>
