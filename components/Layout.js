@@ -24,43 +24,9 @@ export default function Main() {
     const fetchInfo = async () => {
       const infoRes = await fetch('/eve/api/v1/info');
       const infoData = await infoRes.json();
-      // const infoData = {
-      //   applications: {
-      //     eve: {
-      //       callable: 'app',
-      //       module: 'eveapi.__main__',
-      //       path: '/usr/local/eve',
-      //       type: 'python 3',
-      //       user: 'unit',
-      //     },
-      //   },
-      //   listeners: {
-      //     '*:8080': {
-      //       pass: 'applications/eve',
-      //     },
-      //     '*:8081': {
-      //       pass: 'routes',
-      //     },
-      //     '*:8443': {
-      //       pass: 'routes',
-      //     },
-      //   },
-      //   routes: [
-      //     {
-      //       action: {
-      //         share: '/unitapps/app/$uri',
-      //       },
-      //     },
-      //     {
-      //       action: {
-      //         share: '/unitapps/app/stage/$uri',
-      //       },
-      //     },
-      //   ],
-      // };
 
       console.log('init infoData', infoData.status, infoData);
-      if (infoData.status === 'ok') {
+      if (infoData) {
         setServerInfo(infoData);
         const routes = [...infoData.routes];
         routes.shift();
@@ -122,7 +88,7 @@ export default function Main() {
       const infoRes = await fetch('/eve/api/v1/info');
       const infoData = await infoRes.json();
       console.log('click infoData', infoData.status, infoData);
-      if (infoData.status === 'ok') {
+      if (infoData) {
         setServerInfo(infoData);
         const routes = [...infoData.routes];
         routes.shift();
