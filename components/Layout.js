@@ -15,6 +15,7 @@ const ReactJson = dynamic(
 export default function Main() {
   const [isLoading, setIsLoading] = useState(false);
   const [serverInfo, setServerInfo] = useState();
+  const [options, setOptions] = useState([]);
   const [links, setLinks] = useState([]);
   const [branch, setBranch] = useState('');
   const [repo, setRepo] = useState('');
@@ -28,6 +29,30 @@ export default function Main() {
 
     fetchInfo();
   }, []);
+
+  useEffect(() => {
+    const fetchBranches = async () => {
+      const domainParts = repo.split('.com/');
+      if (domainParts.length === 2) {
+        const [owner, repoPart] = domainParts[1]?.split('/');
+        const infoRes = await fetch(
+          `https://api.github.com/repos/${owner}/${repoPart}/branches`
+        );
+        const infoData = await infoRes.json();
+        if (infoData.length) {
+          const options = infoData.map((datum) => datum.name);
+          setOptions(options);
+          setBranch(options[0]);
+        } else {
+          setOptions([]);
+        }
+      }
+    };
+
+    if (repo) {
+      fetchBranches();
+    }
+  }, [repo]);
 
   const onClick = async () => {
     try {
@@ -55,53 +80,31 @@ export default function Main() {
   };
 
   return (
-    <div className="grotesk max-w-8xl mx-auto">
+    <div className="max-w-8xl mx-auto">
       <section className="w-full text-black">
         <div className="my-8 p-4 text-black">
-          <div className="max-w-9xl mx-auto flex flex-col items-start bg-gradient-to-r from-blue-200 to-blue-100 px-5 py-24 lg:flex-row">
-            <div className="flex flex-col items-center pl-0 text-center lg:mb-0 lg:w-1/2 lg:flex-grow lg:items-start lg:pl-12 lg:pr-24 lg:text-left">
-              <h2 className="pb-4 text-2xl font-bold leading-tight lg:text-4xl">
-                Eve Console
+          <div className="max-w-9xl mx-auto flex flex-col items-start bg-gradient-to-r from-blue-200 to-blue-100 px-5 py-8 lg:py-24">
+            <div className="mb-4 flex w-full items-center justify-between lg:px-12">
+              <h2 className="text-2xl font-bold leading-tight lg:text-4xl">
+                App Lab Console
               </h2>
-              <div className="mb-4 flex w-full">
-                <div className="flex-1">
+              <Logos />
+            </div>
+            <div className="flex w-full flex-col lg:flex-row">
+              <div className="flex flex-col pl-0 lg:mb-0 lg:w-1/2 lg:flex-grow lg:items-start lg:pl-12 lg:pr-24 lg:text-left">
+                <div className="mb-4 w-full">
                   <label
-                    htmlFor="branch"
-                    className="text-md block font-medium text-gray-700"
+                    htmlFor="Repository"
+                    className="text-md block h-8 font-medium leading-8 text-gray-700"
                   >
-                    Branch
+                    Repository
                   </label>
                   <input
                     type="text"
-                    name="branch"
-                    id="branch"
-                    onChange={(e) => setBranch(e.target.value)}
-                    placeholder="main, master, dev, ..."
+                    name="Repository"
+                    id="Repository"
+                    onChange={(e) => setRepo(e.target.value)}
                     className="
-                    mt-1
-                    block
-                    w-full
-                    rounded-md
-                    border-gray-300
-                    shadow-sm
-                    focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                  />
-                </div>
-              </div>
-              <div className="mb-4 w-full">
-                <label
-                  htmlFor="Repository"
-                  className="text-md block font-medium text-gray-700"
-                >
-                  Repository
-                </label>
-                <input
-                  type="text"
-                  name="Repository"
-                  id="Repository"
-                  onChange={(e) => setRepo(e.target.value)}
-                  className="
-                    mt-1
                     block
                     w-full
                     rounded-md
@@ -109,73 +112,100 @@ export default function Main() {
                     shadow-sm
                     focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50
                   "
-                />
-              </div>
-              <div className="flex">
-                <button
-                  className="h-10 rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
-                  onClick={onClick}
-                >
-                  Deploy
-                </button>
-                <div className="flex flex-col items-start">
-                  {links.map((link, index) => (
-                    <div key={index} className="flex h-6 items-center">
-                      {index === links.length - 1 && isLoading ? (
-                        <Loading />
-                      ) : (
-                        <a
-                          href={link.ref}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="
-                            ml-3
+                  />
+                </div>
+                <div className="mb-4 flex w-full">
+                  <div className="flex-1">
+                    <label
+                      htmlFor="branch"
+                      className="text-md block font-medium leading-8 text-gray-700"
+                    >
+                      Branch
+                    </label>
+                    <select
+                      className="form-select w-1/2 rounded-md border-gray-300 focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 disabled:cursor-not-allowed"
+                      onChange={(e) => setBranch(e.target.value)}
+                      disabled={options.length === 0}
+                    >
+                      {options.map((option, index) => (
+                        <option key={index}>{option}</option>
+                      ))}
+                    </select>
+                    <button
+                      className="ml-4 h-10 rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-300"
+                      onClick={onClick}
+                      disabled={branch.length === 0 || repo.length === 0}
+                    >
+                      Deploy
+                    </button>
+                  </div>
+                </div>
+                {links.length > 0 && (
+                  <div className="flex flex-col">
+                    <p className="text-md block font-medium leading-8 text-gray-700">
+                      Active Apps
+                    </p>
+                    <div className="flex flex-col items-start">
+                      {links.map((link, index) => (
+                        <div key={index} className="mt-2 flex h-6 items-center">
+                          {index === links.length - 1 && isLoading ? (
+                            <Loading />
+                          ) : (
+                            <a
+                              href={link.ref}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="
                             flex
                             items-center
                             justify-center
-                            text-base
+                            text-lg
                             font-bold
                             text-blue-700
                             underline
                             hover:text-blue-500
                           "
-                        >
-                          {link.name}
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="ml-1 h-4 w-4"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
-                            <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
-                          </svg>
-                        </a>
-                      )}
+                            >
+                              {link.name}
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="ml-1 h-4 w-4"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                              >
+                                <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                                <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+                              </svg>
+                            </a>
+                          )}
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
+                )}
+              </div>
+              <div className="w-4/7 mt-8 lg:mt-0 lg:w-2/5 lg:pr-12">
+                <div className="flex items-center">
+                  <img src={'nginx/logo.png'} alt={''} className="h-8 w-8" />
+                  <p className="text-md block font-medium text-gray-700">
+                    NGINX Unit Configuration
+                  </p>
                 </div>
+                <ReactJson
+                  src={serverInfo}
+                  enableClipboard={false}
+                  displayObjectSize={false}
+                  displayDataTypes={false}
+                  collapsed={true}
+                  style={{
+                    background: 'white',
+                    borderRadius: '6px',
+                    border: '1px solid rgb(209, 213, 219)',
+                    padding: 12,
+                    minHeight: 130,
+                  }}
+                />
               </div>
-            </div>
-            <div className="w-4/7 pr-12 lg:w-2/5">
-              <div className="flex justify-end">
-                <Logos />
-              </div>
-              <ReactJson
-                src={serverInfo}
-                enableClipboard={false}
-                displayObjectSize={false}
-                displayDataTypes={false}
-                collapsed={true}
-                style={{
-                  background: 'white',
-                  borderRadius: '6px',
-                  border: '1px solid rgb(209, 213, 219)',
-                  padding: 12,
-                  marginTop: 48,
-                  minHeight: 130,
-                }}
-              />
             </div>
           </div>
         </div>
