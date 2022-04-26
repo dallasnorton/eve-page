@@ -20,13 +20,22 @@ export default function Main() {
   const [branch, setBranch] = useState('');
   const [repo, setRepo] = useState('');
 
-  useEffect(() => {
-    const fetchInfo = async () => {
-      const infoRes = await fetch('/eve/api/v1/info');
-      const infoData = await infoRes.json();
+  const fetchInfo = async () => {
+    const infoRes = await fetch('/eve/api/v1/info');
+    const infoData = await infoRes.json();
+    if (infoData.status === 'ok') {
       setServerInfo(infoData);
-    };
+      const routes = [...infoData.routes];
+      routes.shift();
+      const deployedLinks = routes.map((route) => {
+        const link = route.action.share.split('/')[3];
+        return { ref: `/${link}/`, name: link };
+      });
+      setLinks(deployedLinks);
+    }
+  };
 
+  useEffect(() => {
     fetchInfo();
   }, []);
 
@@ -57,8 +66,6 @@ export default function Main() {
   const onClick = async () => {
     try {
       setIsLoading(true);
-      setLinks([...links, { ref: `/${branch}/`, name: branch }]);
-
       const resp = await fetch('/eve/api/v1/pull', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -68,9 +75,7 @@ export default function Main() {
       const data = await resp.json();
       console.log({ data });
 
-      const infoRes = await fetch('/eve/api/v1/info');
-      const infoData = await infoRes.json();
-      setServerInfo(infoData);
+      fetchInfo();
 
       setIsLoading(false);
     } catch (error) {
