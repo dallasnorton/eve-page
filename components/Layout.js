@@ -84,17 +84,14 @@ export default function Main() {
 
       const infoRes = await fetch('/eve/api/v1/info');
       const infoData = await infoRes.json();
-      console.log('click infoData', infoData.status, infoData);
       if (infoData) {
         setServerInfo(infoData);
         const routes = [...infoData.routes];
         routes.shift();
-        console.log('click route', routes);
         const deployedLinks = routes.map((route) => {
           const link = route.action.share.split('/')[3];
           return { ref: `/${link}/`, name: link };
         });
-        console.log('click deployedLinks', deployedLinks);
         setLinks(deployedLinks);
       }
 
