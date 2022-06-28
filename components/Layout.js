@@ -109,10 +109,10 @@ export default function Main() {
   };
 
   return (
-    <div className="max-w-8xl mx-auto">
+    <div className="mx-auto max-w-6xl">
       <section className="w-full text-black">
         <div className="my-8 p-4 text-black">
-          <div className="max-w-9xl mx-auto flex flex-col items-start bg-gradient-to-r from-blue-200 to-blue-100 px-5 py-8 lg:py-24">
+          <div className="mx-auto flex max-w-7xl flex-col items-start bg-gradient-to-r from-blue-200 to-blue-100 px-5 py-8 lg:py-24">
             <div className="mb-4 flex w-full items-center justify-between lg:px-12">
               <h2 className="text-2xl font-bold leading-tight lg:text-4xl">
                 App Lab Console
