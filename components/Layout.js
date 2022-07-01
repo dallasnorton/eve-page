@@ -4,6 +4,9 @@ import React, { useState, useEffect } from 'react';
 import Loading from './Loading';
 import Logos from './Logos';
 import dynamic from 'next/dynamic';
+import { getToken } from '../utils/apiToken';
+// import * as dotenv from 'dotenv';
+// dotenv.config();
 
 const ReactJson = dynamic(
   () => {
@@ -22,18 +25,28 @@ export default function Main() {
 
   useEffect(() => {
     const fetchInfo = async () => {
-      const infoRes = await fetch('/eve/api/v1/info');
-      const infoData = await infoRes.json();
-
-      if (infoData) {
-        setServerInfo(infoData);
-        const routes = [...infoData.routes];
-        routes.shift();
-        const deployedLinks = routes.map((route) => {
-          const link = route.action.share.split('/')[3];
-          return { ref: `/${link}/`, name: link };
+      try {
+        const token = await getToken();
+        const hostname = process.env.NEXT_PUBLIC_HOST_NAME;
+        const infoRes = await fetch(`${hostname}/api/v1/deployments`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
-        setLinks(deployedLinks);
+        const infoData = await infoRes.json();
+
+        if (infoData) {
+          setServerInfo(infoData);
+          const routes = [...infoData.routes];
+          routes.shift();
+          const deployedLinks = routes.map((route) => {
+            const link = route.action.share.split('/')[3];
+            return { ref: `/${link}/`, name: link };
+          });
+          setLinks(deployedLinks);
+        }
+      } catch (e) {
+        console.warn(e);
       }
     };
 
@@ -69,7 +82,7 @@ export default function Main() {
       setIsLoading(true);
       // setLinks([...links, { ref: `/${branch}/`, name: branch }]);
 
-      const resp = await fetch('/eve/api/v1/pull', {
+      const resp = await fetch('/api/v1/pull', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ branch, dest: `/unitapps/app/${branch}`, repo }),
@@ -78,11 +91,11 @@ export default function Main() {
       const data = await resp.json();
       console.log({ data });
 
-      // const infoRes = await fetch('/eve/api/v1/info');
+      // const infoRes = await fetch('/api/v1/info');
       // const infoData = await infoRes.json();
       // setServerInfo(infoData);
 
-      const infoRes = await fetch('/eve/api/v1/info');
+      const infoRes = await fetch('/api/v1/info');
       const infoData = await infoRes.json();
       if (infoData) {
         setServerInfo(infoData);
